@@ -1,0 +1,9 @@
+Exception: STATUS_ACCESS_VIOLATION at eip=61122B73
+eax=00000074 ebx=00000074 ecx=00000000 edx=00000074 esi=00000000 edi=00000074
+ebp=0022A938 esp=0022A934 program=D:\ANDROID\eclipse-cpp\workspace\FirstApp\Debug\FirstApp.exe, pid 4036, thread main
+cs=001B ds=0023 es=0023 fs=003B gs=0000 ss=0023
+Stack trace:
+Frame     Function  Args
+0022A938  61122B73 (00000074, 0022A9E4, 0040309A, 00000001)
+0022AA64  6112E66D (200748C0, 00000000, 63F82A40, 200740E0)
+End of stack trace
