@@ -31,6 +31,7 @@
 #define KCYN  "\033[36m"
 #define KWHT  "\033[37m"
 #include <curl/curl.h>
+
 struct string {
   char *ptr;
   size_t len;
