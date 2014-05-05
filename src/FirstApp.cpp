@@ -19,9 +19,8 @@
  * KIND, either express or implied.
  *
  ***************************************************************************/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "FirstApp.h"
+using namespace std;
 #define KNRM  "\033[0m"
 #define KRED  "\033[31m"
 #define KGRN  "\033[32m"
@@ -31,44 +30,66 @@
 #define KCYN  "\033[36m"
 #define KWHT  "\033[37m"
 #include <curl/curl.h>
-
-struct string {
+/*struct string {
   char *ptr;
   size_t len;
-};
-void init_string(struct string *s);
-size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s);
+};*/
+//void init_string(struct string *s);
+//size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s);
 int main(void)
 {
-  CURL *curl;
-  CURLcode res;
+	std:string s = DownloadJSON("http://google.com.vn");;
+	printf("\n%s'%s'%s\n", KGRN, s.data(), KNRM);
+	return 0;
+}
+std::string DownloadJSON(std::string URL)
+{
+    CURL *curl;
+    CURLcode res;
+    std:string DownloadedResponse;
+    struct curl_slist *headers=NULL; // init to NULL is important
+    //std::ostringstream oss;
+    curl_slist_append(headers, "Accept: application/json");
+    curl_slist_append( headers, "Content-Type: application/json");
+    curl_slist_append( headers, "charsets: utf-8");
+    curl = curl_easy_init();
 
-  curl = curl_easy_init();
-  if(curl) {
-	  struct string s;
-	  init_string(&s);
+    if (curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl, CURLOPT_URL, URL.c_str());
+        curl_easy_setopt(curl, CURLOPT_HTTPGET,1);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+        curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,writer);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &DownloadedResponse);
+        res = curl_easy_perform(curl);
 
-    curl_easy_setopt(curl, CURLOPT_URL, "http://google.com.vn");
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writefunc);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &s);
-    /* example.com is redirected, so we tell libcurl to follow redirection */
-    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        if (CURLE_OK == res)
+        {
+            char *ct;
+            res = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
+            if((CURLE_OK == res) && ct)
+                return DownloadedResponse;
+        }
+    }
 
-    /* Perform the request, res will get the return code */
-    res = curl_easy_perform(curl);
-    /* Check for errors */
-    if(res != CURLE_OK)
-      fprintf(stderr, "curl_easy_perform() failed: %s\n",
-              curl_easy_strerror(res));
-
-    /* always cleanup */
-    curl_easy_cleanup(curl);
-    printf("\n%s'%s'%s'Text Normal'\n", KGRN, s.ptr, KNRM);
-  }
- // system("read");
-  return 0;
 }
 
+int writer(char *data, size_t size, size_t nmemb, std::string *buffer_in)
+{
+
+    // Is there anything in the buffer?
+    if (buffer_in != NULL)
+    {
+        // Append the data to the buffer
+        buffer_in->append(data, size * nmemb);
+
+        return size * nmemb;
+    }
+
+    return 0;
+
+}/*
 void init_string(struct string *s) {
   s->len = 0;
   s->ptr = (char*)malloc(s->len+1);
@@ -91,4 +112,4 @@ size_t writefunc(void *ptr, size_t size, size_t nmemb, struct string *s)
   s->len = new_len;
 
   return size*nmemb;
-}
+}*/

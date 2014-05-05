@@ -49,6 +49,7 @@
 								<option id="gnu.cpp.link.option.libs.360614325" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="cygcurl-4"/>
 								</option>
+								<option id="gnu.cpp.link.option.userobjs.158754715" name="Other objects" superClass="gnu.cpp.link.option.userobjs" valueType="userObjs"/>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1076908767" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
